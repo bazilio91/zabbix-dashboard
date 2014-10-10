@@ -1,0 +1,33 @@
+{
+  "name": "monitoring",
+  "version": "0.0.0",
+  "authors": [
+    "Vasily Ostanin <bazilio91@gmail.com>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "jquery": "~2.1.1",
+    "backbone": "~1.1.2",
+    "marionette": "<3",
+    "underscore": "~1.6.0",
+    "requirejs": "~2.1.14",
+    "moment": "~2.7.0",
+    "ion.sound": "IonDen/ion.sound#~2.0.2",
+    "peity": "~2.0.4"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1"
+  }
+}

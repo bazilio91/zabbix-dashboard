@@ -1,0 +1,7 @@
+/.idea
+bit
+include
+node_modules
+public/components
+monitoring.iml
+config.js
