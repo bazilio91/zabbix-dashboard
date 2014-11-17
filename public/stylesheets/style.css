@@ -28,3 +28,7 @@ body {
 .b-item-item-list {
     max-width: 50%;
 }
+
+.b-host-item .badge {
+    margin-left: 5px;
+}

@@ -85,7 +85,6 @@ require([
       },
 
       doHost: function (hostId) {
-        console.log('host', hostId);
         socket.emit('host', {hostids: [hostId]}, function (data) {
           console.log(data);
           app.hostView = new HostDetailsView(new Host(data[0]));

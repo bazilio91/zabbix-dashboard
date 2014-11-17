@@ -12,7 +12,8 @@ define([
    */
   var HostItemView = Marionette.LayoutView.extend({
     modelEvents: {
-      'change filter': 'filter'
+      'change filter': 'filter',
+      'change parentHost': 'onParentHostChange'
     },
 
     views: {
@@ -34,8 +35,10 @@ define([
 
     template: _.template([
       '<div class="panel-heading">',
-      '<a href="/host/<%= hostid %>"><%= name %></a>',
-      '<span class="pull-right text-muted"><%= _.pluck(groups, "name").join(", ") %></div>',
+      ' <a href="/host/<%= hostid %>"><%= name %></a> ',
+      ' <span class="pull-right badge hidden b-physical-host">physical</span> ',
+      ' <span class="pull-right badge b-parent-host"></span> ',
+      ' <span class="pull-right text-muted"><%= _.pluck(groups, "name").join(", ") %></span> ',
       '</div>',
       '<div class="panel-body">',
       '<div class="b-host-item-interfaces"><%= getInterfaces() %></div>',
@@ -85,6 +88,17 @@ define([
 
       this.views.items = new ItemListView({collection: this.model.items});
       this.items.show(this.views.items);
+      this.onParentHostChange();
+    },
+
+    onParentHostChange: function () {
+      if (this.model.get('parentHost')) {
+        this.$el.find('.b-parent-host').text(this.model.get('parentHost').get('name'))
+      }
+
+      if (this.model.get('physicalHost') === true) {
+        this.$el.find('.b-physical-host').removeClass('hidden');
+      }
     }
   });
 

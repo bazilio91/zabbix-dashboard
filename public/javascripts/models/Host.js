@@ -18,7 +18,10 @@ define([
 
     defaults: {
       priority: -1,
-      guest: true
+      guest: true,
+      parentHostId: null,
+      parentHost: null,
+      physicalHost: false
     },
 
     events: {
@@ -43,13 +46,6 @@ define([
 
       this.items = new ItemCollection(this.get('items') || []);
 
-      if (this.get('parentTemplates').templateid === "10172") {
-        this.set('guest', false)
-      } else {
-        var selement = _.findWhere(app.map.selements, {elementid: this.get('hostid')});
-//        console.log(selement, this.get('hostid'));
-      }
-
       app.vent.on('tick', this.onItemsChange, this);
     },
 
@@ -58,8 +54,36 @@ define([
     },
 
     onItemsChange: function () {
-      console.log('items change');
       this.items.set(this.get('items'));
+//      if (_.pluck(this.get('parentTemplates'), 'templateid').indexOf("10172") !== -1) {
+//        this.set('physicalHost', true);
+//      }
+
+      // muhahahahahahHAAHAHAHAHA!!!!!!11111
+      if (_.pluck(this.get('parentTemplates'), 'templateid').indexOf("10172") !== -1) {
+        console.log(_.findWhere(this.get('parentTemplates'), {templateid: '10172'}));
+        console.log('host', this.get('name'));
+        this.set('guest', false)
+      } else {
+        var selement = _.findWhere(app.map.selements, {elementid: this.get('hostid')});
+        if (selement) {
+          var link = _.findWhere(app.map.links, {selementid1: selement.selementid}),
+            attribute = "2";
+          if (!link) {
+            link = _.findWhere(app.map.links, {selementid2: selement.selementid});
+            attribute = "1";
+          }
+
+          if (link) {
+            var hostSelement = _.findWhere(app.map.selements, {selementid: link['selementid' + attribute]});
+            var host = app.collections.hosts.findWhere({hostid: hostSelement.elementid});
+            if (host) {
+              this.set('parentHost', host);
+              this.set('parentHostId', host.get('hostid'))
+            }
+          }
+        }
+      }
     },
 
     onChange: function () {
@@ -89,6 +113,13 @@ define([
 
         if (filter.group && filter.group !== 'null') {
           if (!_.findWhere(this.get('groups'), {groupid: String(filter.group)})) {
+            return false;
+          }
+        }
+
+        if (filter.physical && filter.physical !== 'null') {
+          console.log(this.get('physicalHost'), this.get('name'));
+          if (this.get('physicalHost') !== Boolean(filter.physical)) {
             return false;
           }
         }

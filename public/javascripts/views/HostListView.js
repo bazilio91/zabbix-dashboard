@@ -47,6 +47,15 @@ define([
       '<label class="sr-only" for="filterGroup">Group</label>',
       '<select name=group class="form-control" id="filterGroup">',
       '</select>',
+      '</div> ',
+
+      '<div class="form-group">',
+      '<label class="sr-only" for="filterPhysical">Physical</label>',
+      '<select name=physical class="form-control" id="filterPhysical">',
+      '<option value="null">Any type</option>',
+      '<option value="true">Physical</option>',
+      '<option value="false">Virtual</option>',
+      '</select>',
       '</div>',
 
       '</form></div>',
@@ -62,6 +71,7 @@ define([
       'change @ui.searchForm select': 'filter',
       'change @ui.searchForm input': 'filter'
     },
+
 
     filter: function () {
       this.collection.invoke('set', 'filter', this.ui.searchForm.serializeObject());
